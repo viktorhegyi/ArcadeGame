@@ -1,5 +1,5 @@
+// enemy class
 var Enemy = function() {
-    this.sprite = 'images/enemy-bug.png';
     this.sprite = 'images/enemy-bug.png';
     this.x = -200;
     this.y = randomBugPosition();
@@ -13,6 +13,7 @@ Enemy.prototype.update = function(dt) {
       this.bugSpeed = getRandomNumberForBugSpeed() * dt;
       this.y = randomBugPosition();
     };
+    //check collision with player
     if (player.playerCoordinateX < this.x + 60 && player.playerCoordinateX + 30 > this.x
       && player.playerCoordinateY < this.y + 20 && player.playerCoordinateY + 30 > this.y) {
       player.playerCoordinateX = 303;
@@ -20,30 +21,31 @@ Enemy.prototype.update = function(dt) {
     };
 };
 
+// draw enemy
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// player class
 class Player {
   constructor() {
     this.playerImage = 'images/char-boy.png';
     this.playerCoordinateX = 303;
     this.playerCoordinateY = 303;
-    this.playerPosition = function(x, y) {
-      const position = [x, y];
-      return position;
-    }
   };
   update(dt) {
+    // check if player is in the water and win the game
     if (this.playerCoordinateY === -29 ) {
       this.playerCoordinateX = 303;
       this.playerCoordinateY = 303;
     };
   };
+  // draw player
   render() {
     ctx.drawImage(Resources.get(this.playerImage),
                   this.playerCoordinateX, this.playerCoordinateY);
   };
+  // player movement
   handleInput(direction) {
     switch (direction) {
       case 'up':
@@ -62,6 +64,7 @@ class Player {
   };
 };
 
+// key listener
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
@@ -73,10 +76,12 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+// random number for the 1-3 for bug position
 function getRandomNumberForBugPosition() {
   return Math.floor(Math.random() * Math.floor(3));
 };
 
+// get position 1-3 row for the bug
 function randomBugPosition() {
   const bugCoordinatex = getRandomNumberForBugPosition();
   switch (bugCoordinatex) {
@@ -91,14 +96,17 @@ function randomBugPosition() {
   }
 };
 
+// random number for bug speed
 function getRandomNumberForBugSpeed() {
   return Math.floor((Math.random() * 400)  + 150);
 };
 
+// random number just for the start for the bug
 function getRandomNumberForBugSpeedToStart() {
   return Math.floor((Math.random() * 10)  + 2);
 };
 
+// instantiate the game objects
 const enemy1 = new Enemy();
 const enemy2 = new Enemy();
 const enemy3 = new Enemy();
