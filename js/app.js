@@ -1,21 +1,24 @@
 // enemy class
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
-    this.x = -200;
-    this.y = randomBugPosition();
-    this.bugSpeed = getRandomNumberForBugSpeedToStart();
+    this.enemyCoordinateX = -200;
+    this.enemyCoordinateY = randomEnemyPosition();
+    this.enemySpeed = getRandomNumberForEnemySpeedToStart();
 };
 
 Enemy.prototype.update = function(dt) {
-    this.x += this.bugSpeed;
-    if (this.x > 500) {
-      this.x = 0;
-      this.bugSpeed = getRandomNumberForBugSpeed() * dt;
-      this.y = randomBugPosition();
+    this.enemyCoordinateX += this.enemySpeed;
+    // if enemy goes off the screen on the right, put back to the left of the sceen
+    if (this.enemyCoordinateX > 500) {
+      this.enemyCoordinateX = 0;
+      this.enemySpeed = getRandomNumberForEnemySpeed() * dt;
+      this.enemyCoordinateY = randomEnemyPosition();
     };
     //check collision with player
-    if (player.playerCoordinateX < this.x + 60 && player.playerCoordinateX + 30 > this.x
-      && player.playerCoordinateY < this.y + 20 && player.playerCoordinateY + 30 > this.y) {
+    if (player.playerCoordinateX < this.enemyCoordinateX + 60 &&
+        player.playerCoordinateX + 30 > this.enemyCoordinateX &&
+        player.playerCoordinateY < this.enemyCoordinateY + 20 &&
+        player.playerCoordinateY + 30 > this.enemyCoordinateY) {
       player.playerCoordinateX = 303;
       player.playerCoordinateY = 303;
     };
@@ -23,7 +26,8 @@ Enemy.prototype.update = function(dt) {
 
 // draw enemy
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite),
+                                this.enemyCoordinateX, this.enemyCoordinateY);
 };
 
 // player class
@@ -76,15 +80,15 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-// random number for the 1-3 for bug position
-function getRandomNumberForBugPosition() {
+// random number for the 1-3 for enemy position
+function getRandomNumberForEnemyPosition() {
   return Math.floor(Math.random() * Math.floor(3));
 };
 
-// get position 1-3 row for the bug
-function randomBugPosition() {
-  const bugCoordinatex = getRandomNumberForBugPosition();
-  switch (bugCoordinatex) {
+// get position 1-3 row for the enemy
+function randomEnemyPosition() {
+  const enemyCoordinatex = getRandomNumberForEnemyPosition();
+  switch (enemyCoordinatex) {
     case 0:
       return 54;
       break;
@@ -96,13 +100,13 @@ function randomBugPosition() {
   }
 };
 
-// random number for bug speed
-function getRandomNumberForBugSpeed() {
+// random number for enemy speed
+function getRandomNumberForEnemySpeed() {
   return Math.floor((Math.random() * 400)  + 150);
 };
 
-// random number just for the start for the bug
-function getRandomNumberForBugSpeedToStart() {
+// random number just for the start for the enemy
+function getRandomNumberForEnemySpeedToStart() {
   return Math.floor((Math.random() * 10)  + 2);
 };
 
