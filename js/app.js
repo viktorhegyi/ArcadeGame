@@ -2,8 +2,8 @@
 var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
     this.enemyCoordinateX = -200;
-    this.enemyCoordinateY = randomEnemyPosition();
-    this.enemySpeed = getRandomNumberForEnemySpeedToStart();
+    this.enemyCoordinateY = this.getEnemyPosition();
+    this.enemySpeed = this.getRandomNumberForEnemySpeedToStart();
 };
 
 Enemy.prototype.update = function(dt) {
@@ -11,8 +11,8 @@ Enemy.prototype.update = function(dt) {
     // if enemy goes off the screen on the right, put back to the left of the sceen
     if (this.enemyCoordinateX > 500) {
       this.enemyCoordinateX = 0;
-      this.enemySpeed = getRandomNumberForEnemySpeed() * dt;
-      this.enemyCoordinateY = randomEnemyPosition();
+      this.enemySpeed = this.getRandomNumberForEnemySpeed() * dt;
+      this.enemyCoordinateY = this.getEnemyPosition();
     };
     //check collision with player
     if (player.playerCoordinateX < this.enemyCoordinateX + 60 &&
@@ -28,6 +28,36 @@ Enemy.prototype.update = function(dt) {
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite),
                                 this.enemyCoordinateX, this.enemyCoordinateY);
+};
+
+// get position 1-3 row for the enemy
+Enemy.prototype.getEnemyPosition = function() {
+  const enemyCoordinatex = this.getRandomNumberForEnemyPosition();
+  switch (enemyCoordinatex) {
+    case 0:
+      return 54;
+      break;
+    case 1:
+      return 137;
+      break;
+    case 2:
+      return 220;
+  }
+};
+
+// random number for the 1-3 for enemy position
+Enemy.prototype.getRandomNumberForEnemyPosition = function() {
+  return Math.floor(Math.random() * Math.floor(3));
+};
+
+// random number for enemy speed
+Enemy.prototype.getRandomNumberForEnemySpeed = function() {
+  return Math.floor((Math.random() * 400)  + 150);
+};
+
+// random number just for the start for the enemy
+Enemy.prototype.getRandomNumberForEnemySpeedToStart = function() {
+  return Math.floor((Math.random() * 10)  + 2);
 };
 
 // player class
@@ -79,36 +109,6 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-// random number for the 1-3 for enemy position
-function getRandomNumberForEnemyPosition() {
-  return Math.floor(Math.random() * Math.floor(3));
-};
-
-// get position 1-3 row for the enemy
-function randomEnemyPosition() {
-  const enemyCoordinatex = getRandomNumberForEnemyPosition();
-  switch (enemyCoordinatex) {
-    case 0:
-      return 54;
-      break;
-    case 1:
-      return 137;
-      break;
-    case 2:
-      return 220;
-  }
-};
-
-// random number for enemy speed
-function getRandomNumberForEnemySpeed() {
-  return Math.floor((Math.random() * 400)  + 150);
-};
-
-// random number just for the start for the enemy
-function getRandomNumberForEnemySpeedToStart() {
-  return Math.floor((Math.random() * 10)  + 2);
-};
 
 // instantiate the game objects
 const enemy1 = new Enemy();
