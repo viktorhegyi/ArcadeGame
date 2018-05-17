@@ -14,14 +14,6 @@ Enemy.prototype.update = function(dt) {
       this.enemySpeed = this.getRandomNumberForEnemySpeed() * dt;
       this.enemyCoordinateY = this.getEnemyPosition();
     };
-    //check collision with player
-    if (player.playerCoordinateX < this.enemyCoordinateX + 60 &&
-        player.playerCoordinateX + 30 > this.enemyCoordinateX &&
-        player.playerCoordinateY < this.enemyCoordinateY + 20 &&
-        player.playerCoordinateY + 30 > this.enemyCoordinateY) {
-      player.playerCoordinateX = 303;
-      player.playerCoordinateY = 303;
-    };
 };
 
 // draw enemy
@@ -109,6 +101,19 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+//check collision with player
+function checkCollisions() {
+  allEnemies.forEach(function(enemy) {
+    if (player.playerCoordinateX < enemy.enemyCoordinateX + 60 &&
+          player.playerCoordinateX + 30 > enemy.enemyCoordinateX &&
+            player.playerCoordinateY < enemy.enemyCoordinateY + 20 &&
+              player.playerCoordinateY + 30 > enemy.enemyCoordinateY) {
+      player.playerCoordinateX = 303;
+      player.playerCoordinateY = 303;
+    };
+  });
+};
 
 // instantiate the game objects
 const enemy1 = new Enemy();
