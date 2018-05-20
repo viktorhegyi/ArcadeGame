@@ -58,12 +58,14 @@ class Player {
     this.playerImage = 'images/char-boy.png';
     this.playerCoordinateX = 303;
     this.playerCoordinateY = 303;
+    this.winns = 0;
   };
   update(dt) {
     // check if player is in the water and win the game
     if (this.playerCoordinateY === -29 ) {
       this.playerCoordinateX = 303;
       this.playerCoordinateY = 303;
+      this.winns += 1;  //if player win the game, plus one for winns
     };
   };
   // draw player
@@ -111,8 +113,14 @@ function checkCollisions() {
               player.playerCoordinateY + 30 > enemy.enemyCoordinateY) {
       player.playerCoordinateX = 303;
       player.playerCoordinateY = 303;
+      player.loses += 1;
     };
   });
+};
+
+// update the wins in html
+function updateWins() {
+  document.getElementById('score').innerText = player.winns;
 };
 
 // instantiate the game objects
